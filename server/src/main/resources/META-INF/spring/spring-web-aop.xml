@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+  	  
+  	 <!--AOP for cache-->
+  	 <aop:config>
+  	 	<aop:pointcut id="serviceMethod" expression="execution(* com.xinghuo..service..*(..))"/>
+  	 	<aop:pointcut id="daoMethod" expression="execution(* com.xinghuo..dao..*(..)))"/>
+  	 </aop:config>
+  	 
+     <aop:config>
+  		<aop:pointcut id="txOperation" expression="execution(public * com.xinghuo.ams..service.impl..*Impl.*(..))"/>
+  		<aop:advisor advice-ref="txAdvice" pointcut-ref="txOperation" order="99"/>
+  	 </aop:config>
+  	
+  	 <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+        	<!-- <tx:method name="*" propagation="REQUIRED"/> -->
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="remove*" propagation="REQUIRED"/>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+            <tx:method name="create*" propagation="REQUIRED"/>
+            <tx:method name="add*" propagation="REQUIRED"/>
+						<tx:method name="cancel*" propagation="REQUIRED"/>
+						<tx:method name="complete*" propagation="REQUIRED"/>
+						<tx:method name="doWork*" propagation="REQUIRED"/>
+        </tx:attributes>
+     </tx:advice>
+          
+</beans>

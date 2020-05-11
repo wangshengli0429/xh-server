@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/rabbit
+    http://www.springframework.org/schema/rabbit/spring-rabbit-1.6.xsd">
+
+    <rabbit:admin connection-factory="rabbitConnectionFactory" />
+
+    <rabbit:connection-factory id="rabbitConnectionFactory"
+                               host="${rabbit.host}" username="${rabbit.username}" password="${rabbit.password}"
+                               port="${rabbit.port}" />
+
+    <bean id="fastJsonMessageConverter" class="com.xinghuo.ams.mq.rabbit.base.FastJsonMessageConverter" />
+
+    <rabbit:template id="amqpTemplate" exchange="vmsMqExchange"
+                     connection-factory="rabbitConnectionFactory" message-converter="fastJsonMessageConverter" />
+
+    <bean id="mqSendService" class="com.xinghuo.ams.mq.rabbit.send.MqSendService">
+        <property name="amqpTemplate" ref="amqpTemplate"></property>
+    </bean>
+
+    <rabbit:listener-container channel-transacted="true" message-converter="fastJsonMessageConverter" connection-factory="rabbitConnectionFactory" acknowledge="auto">
+    </rabbit:listener-container>
+
+</beans>

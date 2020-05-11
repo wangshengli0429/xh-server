@@ -1,0 +1,178 @@
+<configuration scan="true">
+
+    <!-- 日志根路径 -->
+    <property name="LOG_HOME" value="/export/logs/ams-server/" />
+    <!-- 完整日志路径 -->
+    <property name="ALL_LOG_FILE" value="ams-server"/>
+    <property name="ERROR_LOG_FILE" value="ams-server-error"/>
+    <property name="MQ_LOG_FILE" value="message-execute-record"/>
+    <property name="MQ_LOG_MYSQL" value="message-mysql-record"/>
+    <property name="DUBBO_LOG_FILE" value="dubbo-execute-record"/>
+    <property name="HTTP_LOG_FILE" value="http-execute-record"/>
+    <property name="EVENTBUS_LOG_FILE" value="eventbus-execute-record"/>
+
+    <!-- 控制台日志 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}||[%thread]||%-5level||%logger||%msg%n</pattern>
+        </layout>
+    </appender>
+
+    <!-- 所有的日志 -->
+    <appender name="allLogAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${ALL_LOG_FILE}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${ALL_LOG_FILE}-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>S
+            <MaxHistory>30</MaxHistory>
+            <!-- 超过maxFileSize大小，进行${date}-i的方式分割 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>500MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}||[%thread]||%-5level||%logger||%msg%n</pattern>
+        </layout>
+    </appender>
+
+    <!-- 错误日志 -->
+    <appender name="errorLogAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${LOG_HOME}/${ERROR_LOG_FILE}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${ERROR_LOG_FILE}-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>S
+            <MaxHistory>30</MaxHistory>
+            <!-- 超过maxFileSize大小，进行${date}-i的方式分割 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>500MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}||[%thread]||%-5level||%logger||%msg%n</pattern>
+        </layout>
+    </appender>
+
+    <!-- 消息MQ日志 -->
+    <appender name="messageInfo" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <file>${LOG_HOME}/${MQ_LOG_FILE}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${MQ_LOG_FILE}-%d{yyyy-MM-dd}.log.zip
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}||%-5level||%msg%n</pattern>
+        </layout>
+    </appender>
+
+    <appender name="messageInfoMysql" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <file>${LOG_HOME}/${MQ_LOG_MYSQL}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${MQ_LOG_MYSQL}-%d{yyyy-MM-dd}.log.zip
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%msg%n</pattern>
+        </layout>
+    </appender>
+
+    <!-- dubbo调用日志 -->
+    <appender name="dubboExecuteInfo" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <file>${LOG_HOME}/${DUBBO_LOG_FILE}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${DUBBO_LOG_FILE}-%d{yyyy-MM-dd}.log.zip
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}||%msg%n</pattern>
+        </layout>
+    </appender>
+
+    <!-- http请求日志 -->
+    <appender name="httpExecuteInfo" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <file>${LOG_HOME}/${HTTP_LOG_FILE}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${HTTP_LOG_FILE}-%d{yyyy-MM-dd}.log.zip
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}||%msg%n</pattern>
+        </layout>
+    </appender>
+
+    <!-- eventbus发送接收日志 -->
+    <appender name="eventBusExecuteInfo" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <file>${LOG_HOME}/${EVENTBUS_LOG_FILE}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${EVENTBUS_LOG_FILE}-%d{yyyy-MM-dd}.log.zip
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}||%msg%n</pattern>
+        </layout>
+    </appender>
+
+    <!-- 消息MQ日志-logger -->
+    <logger name="com.giants.mq.log.aop.SpringAspectLogger" additivity="false" level="INFO">
+        <appender-ref ref="allLogAppender"/>
+        <appender-ref ref="messageInfoMysql"/>
+        <appender-ref ref="messageInfo"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <!-- dubbo调用日志-logger -->
+    <logger name="com.giants.dubbo.chain.trace.zipkin.DubboCallLogFilter" additivity="false" level="INFO">
+        <appender-ref ref="dubboExecuteInfo"/>
+        <appender-ref ref="allLogAppender"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <!-- http请求日志-logger -->
+    <logger name="com.bruce.tool.common.util.LogUtils" additivity="false" level="INFO">
+        <appender-ref ref="httpExecuteInfo" />
+        <appender-ref ref="allLogAppender" />
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <!-- eventbus发送日志-logger -->
+    <logger name="com.third.eventbus.rabbit.register.RabbitRegister" additivity="false" level="INFO">
+        <appender-ref ref="eventBusExecuteInfo" />
+        <appender-ref ref="allLogAppender" />
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <!-- eventbus接收日志-logger -->
+    <logger name="com.third.eventbus.rabbit.handler.RabbitEventArgListener" additivity="false" level="INFO">
+        <appender-ref ref="eventBusExecuteInfo" />
+        <appender-ref ref="allLogAppender" />
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <!-- druid的sql打印日志-logger -->
+    <logger name="org.springframework.amqp.rabbit.listener" level="INFO" />
+    <logger name="org.springframework.jdbc.datasource" level="INFO" />
+    <logger name="com.ctrip.framework.apollo" level="INFO" />
+    <logger name="org.apache.zookeeper" level="INFO" />
+    <logger name="druid.sql.Statement" level="DEBUG" />
+    <logger name="com.alibaba.dubbo" level="INFO" />
+    <logger name="org.apache.dubbo" level="INFO" />
+
+    <root level="DEBUG">
+        <appender-ref ref="errorLogAppender" />
+        <appender-ref ref="allLogAppender" />
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>

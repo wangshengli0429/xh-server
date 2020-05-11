@@ -1,0 +1,1 @@
+DubboCallLogFilter=com.giants.dubbo.chain.trace.zipkin.DubboCallLogFilter

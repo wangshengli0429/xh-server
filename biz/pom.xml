@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+	<groupId>com.xinghuo.server</groupId>
+	<artifactId>ams</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>ams-biz</artifactId>
+  <packaging>pom</packaging>
+
+  <name>ams-biz</name>
+  
+  <modules>
+	<module>tools</module>
+	<module>cms</module>
+	<module>mq</module>
+  </modules>
+
+  <dependencies>
+	<dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>ams-service</artifactId>
+	  <optional>true</optional>
+    </dependency>
+	<dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+    </dependency>
+	<dependency>
+		<groupId>org.springframework.amqp</groupId>
+		<artifactId>spring-rabbit</artifactId>
+	</dependency>
+    <dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-web</artifactId>
+    </dependency>
+	<dependency>
+		<groupId>org.mybatis</groupId>
+		<artifactId>mybatis</artifactId>
+	</dependency>
+	  <dependency>
+		<groupId>com.google.guava</groupId>
+		<artifactId>guava</artifactId>
+	</dependency>
+	  <dependency>
+		  <groupId>com.bruce.tool</groupId>
+		  <artifactId>tool-rpc-http</artifactId>
+	  </dependency>
+	  <dependency>
+		  <groupId>org.projectlombok</groupId>
+		  <artifactId>lombok</artifactId>
+	  </dependency>
+  </dependencies>
+</project>

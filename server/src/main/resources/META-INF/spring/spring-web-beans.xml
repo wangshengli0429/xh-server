@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:apollo="http://www.ctrip.com/schema/apollo"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd
+    http://www.ctrip.com/schema/apollo http://www.ctrip.com/schema/apollo.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
+    <context:component-scan base-package="com.xinghuo.ams"/>
+    <apollo:config/>
+
+    <bean id="propertyConfigurer"
+          class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:application.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="slf4jFilter" class="com.alibaba.druid.filter.logging.Slf4jLogFilter">
+        <property name="connectionLogEnabled" value="false"/>
+        <property name="dataSourceLogEnabled" value="false"/>
+        <property name="resultSetLogEnabled" value="false"/>
+        <property name="statementSqlPrettyFormat" value="true"/>
+        <property name="statementExecutableSqlLogEnable" value="true"/>
+        <property name="statementExecuteAfterLogEnabled" value="false"/>
+        <property name="statementParameterSetLogEnabled" value="false"/>
+        <property name="statementPrepareAfterLogEnabled" value="false"/>
+        <property name="statementPrepareCallAfterLogEnabled" value="false"/>
+        <property name="statementCloseAfterLogEnabled" value="false"/>
+        <property name="connectionCloseAfterLogEnabled" value="false"/>
+    </bean>
+
+    <!-- datasource define -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          init-method="init" destroy-method="close">
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="filters" value="stat"/>
+        <property name="maxActive" value="100"/>
+        <property name="initialSize" value="10"/>
+        <property name="minIdle" value="0" />
+		<!-- 1分钟 -->
+		<property name="maxWait" value="60000" />
+		<!-- 10分钟 -->
+		<property name="timeBetweenEvictionRunsMillis" value="600000" />
+		<!-- 10分钟 -->
+		<property name="minEvictableIdleTimeMillis" value="600000" />
+        <property name="validationQuery" value="SELECT 'x'"/>
+        <property name="validationQueryTimeout" value="5"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="removeAbandoned" value="true"/>
+        <!-- 单位:秒  -->
+        <property name="removeAbandonedTimeout" value="3600" />
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="50"/>
+        <property name="proxyFilters">
+            <list>
+                <ref bean="slf4jFilter"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+    </bean>
+
+    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:META-INF/sqlmap-config.xml"/>
+        <property name="mapperLocations">
+            <list>
+                <value>classpath*:META-INF/sqlmap/**/*.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.xinghuo.ams.*.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sessionFactory"/>
+    </bean>
+
+
+    <bean id="resourceBundleMessageSource"
+          class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>ams-resources</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="com.giants.common.SpringContextHelper"/>
+
+    <bean id="taskExecutor"
+          class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="5"/>
+        <property name="maxPoolSize" value="10"/>
+        <property name="keepAliveSeconds" value="300"/>
+    </bean>
+</beans>
