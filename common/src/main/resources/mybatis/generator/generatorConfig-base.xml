@@ -8,12 +8,12 @@
 		<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"></plugin>
 		<plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
 		<plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin>
-		<plugin type="org.mybatis.generator.my.plugins.PaginationPlugin"></plugin>
-		<plugin type="org.mybatis.generator.my.plugins.ExampleEnhancedPlugin"></plugin>
-		<plugin type="org.mybatis.generator.my.plugins.ModelEnhancedPlugin"></plugin>
-		<plugin type="org.mybatis.generator.my.plugins.XmlFileOverwritePlugin"></plugin>
-		<plugin type="org.mybatis.generator.my.plugins.InsertBatchPlugin"></plugin>
-		<plugin type="org.mybatis.generator.my.plugins.UpdateBatchPlugin"></plugin>
+<!--		<plugin type="org.mybatis.generator.my.plugins.PaginationPlugin"></plugin>-->
+<!--		<plugin type="org.mybatis.generator.my.plugins.ExampleEnhancedPlugin"></plugin>-->
+<!--		<plugin type="org.mybatis.generator.my.plugins.ModelEnhancedPlugin"></plugin>-->
+<!--		<plugin type="org.mybatis.generator.my.plugins.XmlFileOverwritePlugin"></plugin>-->
+<!--		<plugin type="org.mybatis.generator.my.plugins.InsertBatchPlugin"></plugin>-->
+<!--		<plugin type="org.mybatis.generator.my.plugins.UpdateBatchPlugin"></plugin>-->
 
 		<commentGenerator>
 			<!-- 这个元素用来去除指定生成的注释中是否包含生成的日期 false:表示保护 -->
